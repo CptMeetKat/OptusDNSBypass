@@ -37,4 +37,4 @@ When attempting to customise the DNS from admin panel, you are only provided the
 The DNS has not changed when viewing from the router admin panel?
 - This is expected, however when you view the DNS from the API using the scripts, you will see the newly applied DNS in the field `"dnsservers":"<dns1>, <dns2>`"
 - The router admin panel seems to get confused and **will not** display correctly as the new DNS is not from the pre-selected options
-- The current DNS settings can also be view by visiting http://<router-ip>/api/v1/dhcp **after** logging into the admin panel
+- The current DNS settings can also be view by visiting http://\<router-ip\>/api/v1/dhcp **after** logging into the admin panel
