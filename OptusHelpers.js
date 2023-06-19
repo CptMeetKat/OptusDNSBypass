@@ -1,10 +1,8 @@
 
-//unknown hash function used in auth; scraped from router client scripts
-//seems to return salt+hash(pwd?)
-//it has some relation to SHA512 hash as noted in comments
-//Possibly an Optus/Sagemcom built:
-// - Challenge-Handshake Authentication Protocol
-// - Salted Challenge Response Authentication Mechanism
+//  Custom functions used in auth that were scraped from router client scripts
+//     - unknown_hash(pwd,salt) -> returns salt+customPBKDF2(pwd + salt)
+//     - The returned value is used as the salt/hash argument for a crypt(C) function
+//     - Uses a non-standard Base64 character set, and a custom mapping table when encoding to Base64
 
 function unknown_hash(pwd,salt)
 {
@@ -32,7 +30,9 @@ function X(e, t) {
         function(e, t, i, n, a) {
             return e.length > 2 && (t = i ? "$6$rounds=" + i + "$" : "$6$"),
             t + n + "$" + a
-        }(n, "$6$", i, t, function(e, t, i) {
+        }(n, "$6$", i, t, function(e, t, i) { 
+            // This is a base64 encoding functionwith a custom mapping table and a custom encoding scheme
+            // Characters are processed out of order...unsure why? Obfuscation?
             let n, a = "";
             for (n = 0; n < e.length; n += 3) {
                 let r, s;
@@ -50,7 +50,8 @@ function X(e, t) {
                 }
             }
             return a
-        }(function(e, t, i) {
+        }(function(e, t, i) { //e = "password", t = "salt", i = 5000
+            // This appears to be a custom PBKDF2 like algorithm
             const n = function(e, t) {
                 const i = T(e + t + e)
                   , n = e.length;
@@ -75,7 +76,7 @@ function X(e, t) {
                 D % 7 && (d += s),
                 d += 1 & D ? c : s,
                 c = T(d);
-            return c
+            return c 
         }(e, t, i || 5e3), [42, 21, 0, 1, 43, 22, 23, 2, 44, 45, 24, 3, 4, 46, 25, 26, 5, 47, 48, 27, 6, 7, 49, 28, 29, 8, 50, 51, 30, 9, 10, 52, 31, 32, 11, 53, 54, 33, 12, 13, 55, 34, 35, 14, 56, 57, 36, 15, 16, 58, 37, 38, 17, 59, 60, 39, 18, 19, 61, 40, 41, 20, 62, 63], "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"))
     }(e, t)
 }
