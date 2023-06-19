@@ -28,7 +28,7 @@ This information is available on the router admin login home page
 ## Admin Panel Locked DNS
 When attempting to customise the DNS from admin panel, you are only provided the options of choosing from a pre-selected list (see image). This may be sufficient for most purposes, however this would make infeasible to hook in a [Pi-hole](https://pi-hole.net/) at the router level.
 
-**Note:** There is not custom DNS option.
+**Note:** There is no custom DNS option.
  
 ![Locked router interface](./images/router_interface.jpg)
 
