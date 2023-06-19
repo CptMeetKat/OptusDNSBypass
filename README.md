@@ -13,22 +13,23 @@ This information is available on the router admin login home page
 - Node v17.9.0
 
 ## How to Use?
-1. Copy `settings.conf.sample` and rename to `settings.conf`
-2. Populate the fields: host, password, dns1, dns2
+1. Run `npm install`
+2. Copy `settings.conf.sample` and rename to `settings.conf`
+3. Populate the fields: host, password, dns1, dns2
    - username is default `optus`
    - leave `modifyDNS` as `false` for now
-3. Run `node app.js` in console
-4. You will see the current DNS settings logged to the console in the field `"dnsservers":"<dns1>, <dns2>"`
-5. Change `modifyDNS` in the config file to `true`
-6. Run `node app.js` in console, to update the DNS
-7. Wait 10 seconds for the router to update its configurations
-8. Change `modifyDNS` in the config file to `false`
-9. Run `node app.js` in console once more to view the applied settings
+4. Run `node app.js` in console
+5. You will see the current DNS settings logged to the console in the field `"dnsservers":"<dns1>, <dns2>"`
+6. Change `modifyDNS` in the config file to `true`
+7. Run `node app.js` in console, to update the DNS
+8. Wait 10 seconds for the router to update its configurations
+9. Change `modifyDNS` in the config file to `false`
+10. Run `node app.js` in console once more to view the applied settings
 
 ## Admin Panel Locked DNS
 When attempting to customise the DNS from admin panel, you are only provided the options of choosing from a pre-selected list (see image). This may be sufficient for most purposes, however this would make infeasible to hook in a [Pi-hole](https://pi-hole.net/) at the router level.
 
-**Note:** There is not custom DNS option.
+**Note:** There is no custom DNS option.
  
 ![Locked router interface](./images/router_interface.jpg)
 
