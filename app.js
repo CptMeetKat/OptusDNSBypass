@@ -1,6 +1,6 @@
 
-const OptusAPI = require('./OptusAPI');
-const APISessionManager =  require('./APISessionManager');
+const OptusAPI = require('./RouterAPI/OptusAPI');
+const APISessionManager =  require('./RouterAPI/APISessionManager');
 const fs = require('fs');
 
 
