@@ -1,31 +1,12 @@
-
 const APISessionManager =  require('./RouterAPI/APISessionManager');
 const DNSBypass =  require('./DNSBypass/DNSBypass');
+const ConfigManager = require('./ConfigManager.js');
 
-const fs = require('fs');
-
-
-let config = {}
-let configPath = "./settings.conf"
-
-config = getConfig(configPath);
-console.log("CONFIG:");
-console.log(config);
-
-function getConfig(path)
-{
-   try {
-      const data = fs.readFileSync(path, 'utf8');
-      let config = JSON.parse(data);			
-      return config;
-
-   } catch (err) {
-      console.error(err);
-   }
-}
 
 async function run()
 {
+   let config = ConfigManager.getConfig("./settings.conf");
+
    try
    {
       let session = new APISessionManager(config.host, config.username, config.password);
