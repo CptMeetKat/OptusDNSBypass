@@ -1,7 +1,7 @@
 {
    "host": "http://<router-ip>",
    "username": "optus",
-   "password": "<password>"
+   "password": "<password>",
    "dns1": "<dns_ip1>",
    "dns2": "<dns_ip2>",
    "modifyDNS": false
