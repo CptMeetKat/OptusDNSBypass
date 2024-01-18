@@ -108,6 +108,24 @@ class OptusAPI {
      const response = axios(options)
      return response;
     }
+
+
+    static getHosts(url, cookie) {
+      const options = {
+         url: url + '/api/v1/hosts',
+         method: 'GET',
+         headers: {
+           'Accept':'application/json',
+           'Accept-Language': 'en-GB',
+           'Connection': 'keep-alive',
+           'Cookie': "salt="+cookie.salt+"; nonce=" + cookie.nonce+"; conid="+cookie.conid,
+         }
+       };
+
+
+       const response = axios(options)
+       return response;
+    }
 }
  
 
