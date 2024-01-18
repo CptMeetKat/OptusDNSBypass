@@ -1,2 +1,3 @@
 settings.conf
 node_modules/
+**/device-cache.json
