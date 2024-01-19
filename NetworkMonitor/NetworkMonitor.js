@@ -20,6 +20,30 @@ class NetworkMonitor {
       }
       return [];
    }
+
+   static buildCache(devices) //devices from the webrequest
+   {
+      let cacheData = NetworkMonitor.readCache("./NetworkMonitor/device-cache.json"); 
+      let cache = {};
+      for(let c of cacheData) //Add mac address as field, for mapping
+         cache[c.macaddress] = c;
+
+      // BuildCache()
+
+      for(let d of devices) 
+      {
+         if(cache[d.macaddress] == undefined) //if any devices found dont exist in cache, then add it (so we can save it)
+         {
+            // console.log(d.macaddress);
+            cache[d.macaddress] = {};
+            cache[d.macaddress].nickname = "";
+            cache[d.macaddress].hostname = d.hostname;
+            cache[d.macaddress].macaddress = d.macaddress;
+         }
+      }
+      return cache;
+      
+   }
    
    async run() //REFACTOR
    {
@@ -33,49 +57,37 @@ class NetworkMonitor {
          let devices = response.data[0].hosts.list;
 
 
-
-         let cacheData = NetworkMonitor.readCache("./NetworkMonitor/device-cache.json"); 
-         let cache = {};
-         for(let c of cacheData)
-            cache[c.macaddress] = c;
-
-
-         //Print active devices
-         const green = "\x1b[32m";
-         const reset = "\x1b[0m";
-         for(let d of devices)
-         {
-            if(d.active)
-            {
-               let nickname = "";
-               if(   cache[d.macaddress] != undefined  )
-                  nickname = cache[d.macaddress].nickname;
-
-               console.log(green + nickname + " (" + d.hostname  + ") " + reset + "\n\t" + d.ipaddress + "\n\t" + d.macaddress);
-            }   
-            
-            if(cache[d.macaddress] == undefined)
-            {
-               // console.log(d.macaddress);
-               cache[d.macaddress] = {};
-               cache[d.macaddress].nickname = "";
-               cache[d.macaddress].hostname = d.hostname;
-               cache[d.macaddress].macaddress = d.macaddress;
-            }
-         }
-
+         let cache = NetworkMonitor.buildCache(devices);
 
          let x1 = [];
-         for(let w of Object.keys(cache))
+         for(let w of Object.keys(cache)) //Repackage cache into x1, so we we can write to cache file
          {
             x1.push(cache[w]);
          }
 
          NetworkMonitor.writeToFile(JSON.stringify(x1), "./NetworkMonitor/device-cache.json")
-
+         NetworkMonitor.printDevices(devices, cache);
 
       } catch (error) {
          console.error('Error:', error);
+      }
+   }
+
+   static printDevices(devices, cache)
+   {
+      //Print active devices
+      const green = "\x1b[32m";
+      const reset = "\x1b[0m";
+      for(let d of devices)
+      {
+         if(d.active)
+         {
+            let nickname = "";
+            if(   cache[d.macaddress] != undefined  )
+               nickname = cache[d.macaddress].nickname;
+
+            console.log(green + nickname + " (" + d.hostname  + ") " + reset + "\n\t" + d.ipaddress + "\n\t" + d.macaddress);
+         }   
       }
    }
    
