@@ -4,6 +4,8 @@
   "description": "Bypass router admin panel client side lock on custom DNS",
   "main": "app.js",
   "scripts": {
+    "view-DNS": "node app.js --viewDNS",
+    "view-network": "node app.js --monitor",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -24,6 +26,7 @@
   },
   "homepage": "https://github.com/CptMeetKat/OptusDNSBypass#readme",
   "dependencies": {
+    "argparse": "^2.0.1",
     "axios": "^1.4.0"
   }
 }

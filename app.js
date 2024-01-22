@@ -1,59 +1,44 @@
+const { ArgumentParser } = require('argparse')
 
-const OptusAPI = require('./OptusAPI');
-const APISessionManager =  require('./APISessionManager');
-const fs = require('fs');
+const DNSBypass =  require('./DNSBypass/DNSBypass');
+const ConfigManager = require('./ConfigManager.js');
+const NetworkMonitor = require('./NetworkMonitor/NetworkMonitor.js');
 
-
-let config = {}
-let configPath = "./settings.conf"
-
-config = getConfig(configPath);
-console.log("CONFIG:");
-console.log(config);
-
-function getConfig(path)
-{
-   try {
-      const data = fs.readFileSync(path, 'utf8');
-      let config = JSON.parse(data);			
-      return config;
-
-   } catch (err) {
-      console.error(err);
-   }
-}
 
 async function run()
 {
-   try
+   const parser = new ArgumentParser({ description: 'Use Optus Sagemcom 5393 API.' })
+   parser.add_argument('-m', '--monitor', { dest: 'monitor', action: 'store_const',
+                                     const: true, default: false,
+                                     help: 'view devices on network' });
+   
+   parser.add_argument('-vd', '--viewDNS', { dest: 'viewDNS', action: 'store_const',
+                                     const: true, default: false,
+                                     help: 'view current DHCP/DNS Settings' });
+   
+   
+   let md_group = parser.add_argument_group('Modify DNS', 'Modify the current DNS');
+   md_group.add_argument('-md', '--modifyDNS', {metavar: ['ip1','ip2'], type:'str', help:'DNS IP addresses', nargs:2});
+   
+   let xargs = parser.parse_args()
+   
+
+   let config = ConfigManager.getConfig("./settings.conf");
+   const args = process.argv.slice(2);
+   if(xargs.viewDNS)
+      new DNSBypass(config).run();
+   else if(xargs.modifyDNS)
    {
-      let session = new APISessionManager(config.host, config.username, config.password);
-      let cookie = await session.connect();
-
-      console.log("Current DHCP settings: ");
-      await displayDNS(config.host, cookie);
-      if(config.modifyDNS)
-         await changeDNS(config.host, cookie, config.dns1, config.dns2);
-
-   } catch (error) {
-      console.error('Error:', error);
+      console.log("ModifyingDNS");
+      config.dns1 = xargs.modifyDNS[0]; //need to validate IPs?
+      config.dns2 = xargs.modifyDNS[1];
+      config.modifyDNS = true; //these need to be removed from the config, restructure DNSBypass object?
+      new DNSBypass(config).run();
    }
-}
-
-async function displayDNS(url, cookie)
-{
-   let response = await OptusAPI.getDNS(url, cookie); //CHECK DNS
-   console.log(response.data);
-   return response;
-}
-
-async function changeDNS(url, cookie, dns1, dns2)
-{
-
-   let response = await OptusAPI.putDNS(url, cookie, dns1, dns2); //SET DNS
-   return response;
+   else if(xargs.monitor)
+      new NetworkMonitor(config).run();
+   else 
+      console.log("**No action specified**");
 }
 
 run();
-
-
