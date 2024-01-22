@@ -7,8 +7,6 @@ const NetworkMonitor = require('./NetworkMonitor/NetworkMonitor.js');
 
 async function run()
 {
-   // console.log(process.argv.slice(2));
-
    const parser = new ArgumentParser({ description: 'Use Optus Sagemcom 5393 API.' })
    parser.add_argument('-m', '--monitor', { dest: 'monitor', action: 'store_const',
                                      const: true, default: false,
@@ -23,8 +21,6 @@ async function run()
    md_group.add_argument('-md', '--modifyDNS', {metavar: ['ip1','ip2'], type:'str', help:'DNS IP addresses', nargs:2});
    
    let xargs = parser.parse_args()
-   // console.log(xargs);
-   // return;
    
 
    let config = ConfigManager.getConfig("./settings.conf");
@@ -33,7 +29,6 @@ async function run()
       new DNSBypass(config).run();
    else if(xargs.modifyDNS)
    {
-      console.log("ModifyingDNS");
       config.dns1 = xargs.modifyDNS[0]; //need to validate IPs?
       config.dns2 = xargs.modifyDNS[1];
       config.modifyDNS = true; //these need to be removed from the config, restructure DNSBypass object?
@@ -44,6 +39,5 @@ async function run()
    else 
       console.log("**No action specified**");
 }
-
 
 run();
