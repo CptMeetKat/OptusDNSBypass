@@ -29,6 +29,7 @@ async function run()
       new DNSBypass(config).run();
    else if(xargs.modifyDNS)
    {
+      console.log("ModifyingDNS");
       config.dns1 = xargs.modifyDNS[0]; //need to validate IPs?
       config.dns2 = xargs.modifyDNS[1];
       config.modifyDNS = true; //these need to be removed from the config, restructure DNSBypass object?
