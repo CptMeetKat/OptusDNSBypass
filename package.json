@@ -4,8 +4,8 @@
   "description": "Bypass router admin panel client side lock on custom DNS",
   "main": "app.js",
   "scripts": {
-    "dnsBypass": "node app.js dnsBypass",
-    "view-network": "node app.js view-network",
+    "view-DNS": "node app.js --viewDNS",
+    "view-network": "node app.js --monitor",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
