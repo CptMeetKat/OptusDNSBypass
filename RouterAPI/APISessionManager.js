@@ -5,6 +5,8 @@ const OptusHelpers =  require('./OptusHelpers');
 
 
 class APISessionManager {
+
+   static Logger = console;
    
    constructor(host, username, password) {
       this.url = host;
@@ -60,7 +62,7 @@ class APISessionManager {
 
       let auth_key = APISessionManager.generateAuthKey(hashedCredentials, cnonce)
       
-      console.log("***Initial Connection: " + response.status);
+      APISessionManager.Logger.info("***Initial Connection: " + response.status);
 
       return {"cookie": {"nonce":nonce, "conid":conid, "salt":salt},
                "auth" :{"auth_key": auth_key, "cnonce": cnonce}
@@ -97,7 +99,7 @@ class APISessionManager {
       let loginCookie = {...cookie};
 
       loginCookie.conid = conid;
-      console.log("***Login: " + response.status);
+      APISessionManager.Logger.info("***Login: " + response.status);
 
       return {"cookie": loginCookie, "response" : response};
    }

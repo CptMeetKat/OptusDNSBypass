@@ -4,6 +4,8 @@ const fs = require('fs');
 
 class NetworkMonitor {
 
+   static Logger = console;
+   
    constructor(config) {
       this.config = config
    }
@@ -16,7 +18,7 @@ class NetworkMonitor {
          return config;
 
       } catch (err) {
-         console.error(err);
+         NetworkMonitor.Logger.error(err);
       }
       return [];
    }
@@ -34,7 +36,7 @@ class NetworkMonitor {
       {
          if(cache[d.macaddress] == undefined) //if any devices found dont exist in cache, then add it (so we can save it)
          {
-            // console.log(d.macaddress);
+            // NetworkMonitor.Logger.log(d.macaddress);
             cache[d.macaddress] = {};
             cache[d.macaddress].nickname = "";
             cache[d.macaddress].hostname = d.hostname;
@@ -52,7 +54,7 @@ class NetworkMonitor {
          let session = new APISessionManager(this.config.host, this.config.username, this.config.password);
          let cookie = await session.connect();
    
-         console.log("\n\nCurrent HOST settings:");
+         NetworkMonitor.Logger.log("\n\nCurrent HOST settings:");
          let response = await NetworkMonitor.displayHosts(this.config.host, cookie);
          let devices = response.data[0].hosts.list;
 
@@ -69,7 +71,8 @@ class NetworkMonitor {
          NetworkMonitor.printDevices(devices, cache);
 
       } catch (error) {
-         console.error('Error:', error);
+         
+         NetworkMonitor.Logger.error("Error:", error);
       }
    }
 
@@ -85,8 +88,16 @@ class NetworkMonitor {
             let nickname = "";
             if(   cache[d.macaddress] != undefined  )
                nickname = cache[d.macaddress].nickname;
+            
+            
+            let hostname_format = "";
+            if(d.hostname != "")
+               hostname_format = " (" + d.hostname  + ") ";
+            if(nickname == "")
+               hostname_format = "(?)"
 
-            console.log(green + nickname + " (" + d.hostname  + ") " + reset + "\n\t" + d.ipaddress + "\n\t" + d.macaddress);
+               
+            NetworkMonitor.Logger.log(green + nickname + hostname_format + reset + "\n\t" + d.ipaddress + "\n\t" + d.macaddress);
          }   
       }
    }
@@ -96,9 +107,9 @@ class NetworkMonitor {
       // Write to the file
       fs.writeFile(filePath, content, (err) => {
       if (err) {
-         console.error('Error writing to file:', err);
+         NetworkMonitor.Logger.error('Error writing to file:', err);
       } else {
-         console.log('Content has been written to the file successfully.');
+         NetworkMonitor.Logger.info('Content has been written to the file successfully.');
       }
       });
    }
@@ -106,7 +117,7 @@ class NetworkMonitor {
    static async displayHosts(url, cookie)
    {
       let response = await OptusAPI.getHosts(url, cookie); //CHECK DNS
-      // console.log(JSON.stringify(response.data));
+      // NetworkMonitor.Logger.log(JSON.stringify(response.data));
       return response;
    }
 }
