@@ -85,8 +85,16 @@ class NetworkMonitor {
             let nickname = "";
             if(   cache[d.macaddress] != undefined  )
                nickname = cache[d.macaddress].nickname;
+            
+            
+            let hostname_format = "";
+            if(d.hostname != "")
+               hostname_format = " (" + d.hostname  + ") ";
+            if(nickname == "")
+               hostname_format = "(?)"
 
-            console.log(green + nickname + " (" + d.hostname  + ") " + reset + "\n\t" + d.ipaddress + "\n\t" + d.macaddress);
+               
+            console.log(green + nickname + hostname_format + reset + "\n\t" + d.ipaddress + "\n\t" + d.macaddress);
          }   
       }
    }
