@@ -3,6 +3,8 @@ const { ArgumentParser } = require('argparse')
 const DNSBypass =  require('./DNSBypass/DNSBypass');
 const ConfigManager = require('./ConfigManager.js');
 const NetworkMonitor = require('./NetworkMonitor/NetworkMonitor.js');
+const Logger = require('./Services/Logger.js');
+const APISessionManager = require('./RouterAPI/APISessionManager.js');
 
 
 function parseArgs()
@@ -15,6 +17,10 @@ function parseArgs()
    parser.add_argument('-vd', '--viewDNS', { dest: 'viewDNS', action: 'store_const',
                                      const: true, default: false,
                                      help: 'view current DHCP/DNS Settings' });
+
+   parser.add_argument('-v', '--verbose', { dest: 'verbose', action: 'store_const',
+                                     const: true, default: false,
+                                     help: 'Set to verbose mode' });
    
    
    let md_group = parser.add_argument_group('Modify DNS', 'Modify the current DNS');
@@ -44,9 +50,21 @@ async function run(args)
 
 }
 
+function configureLogger(args)
+{
+   let logger = new Logger();
+   if(args.verbose)
+      logger.setLogLevel(5)
+
+   ConfigManager.Logger = logger;
+   NetworkMonitor.Logger = logger;
+   APISessionManager.Logger = logger;
+}
+
 async function main()
 {
    let args = parseArgs();
+   configureLogger(args);
    await run(args);
 }
 
