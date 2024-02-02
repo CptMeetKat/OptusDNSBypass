@@ -6,17 +6,25 @@ class DNSBypass {
 
    constructor(config) {
       this.config = config
+
+      this.host = config.host;
+      this.username = config.username;
+      this.password = config.password;
+      this.dns1 = config.dns1;
+      this.dns2 = config.dns2;
+      this.modifyDNS = config.modifyDNS;
+
    }
 
    async viewDNS()
    {
       try
       {
-         let session = new APISessionManager(this.config.host, this.config.username, this.config.password);
+         let session = new APISessionManager(this.host, this.username, this.password);
          let cookie = await session.connect();
 
          console.info("Current DHCP settings: ");
-         await DNSBypass.displayDNS(this.config.host, cookie);
+         await DNSBypass.displayDNS(this.host, cookie);
 
       } catch (error) {
          console.error('Error:', error);
