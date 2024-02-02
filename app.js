@@ -26,21 +26,27 @@ async function run(args)
 
 }
 
-function configureLogger(isVerbose)
+function configureLoggers(logger)
 {
-   let logger = new Logger();
-   if(isVerbose)
-      logger.setLogLevel(5);
-
    ConfigManager.Logger = logger;
    NetworkMonitor.Logger = logger;
    APISessionManager.Logger = logger;
 }
 
+function createLogger(isVerbose)
+{
+   let logger = new Logger();
+   if(isVerbose)
+      logger.setLogLevel(5);
+
+   return logger;
+}
+
 async function main()
 {
    let args = ArgumentParser.parseArgs();
-   configureLogger(args.verbose);
+   let logger = createLogger(args.verbose);
+   configureLoggers(logger);
    await run(args);
 }
 
