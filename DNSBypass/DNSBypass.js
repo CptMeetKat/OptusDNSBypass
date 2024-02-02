@@ -8,6 +8,21 @@ class DNSBypass {
       this.config = config
    }
 
+   async viewDNS()
+   {
+      try
+      {
+         let session = new APISessionManager(this.config.host, this.config.username, this.config.password);
+         let cookie = await session.connect();
+
+         console.info("Current DHCP settings: ");
+         await DNSBypass.displayDNS(this.config.host, cookie);
+
+      } catch (error) {
+         console.error('Error:', error);
+      }
+   }
+
    async run()
    {
       try

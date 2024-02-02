@@ -10,7 +10,9 @@ async function run(args)
 {
    let config = ConfigManager.getConfig("./settings.conf");
    if(args.viewDNS)
-      await new DNSBypass(config).run();
+   {
+      await new DNSBypass(config).viewDNS();
+   }
    else if(args.modifyDNS)
    {
       console.log("ModifyingDNS");
