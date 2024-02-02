@@ -4,10 +4,10 @@ const APISessionManager =  require('../RouterAPI/APISessionManager');
 
 class DNSBypass {
 
-   constructor(config) {
-      this.host = config.host;
-      this.username = config.username;
-      this.password = config.password;
+   constructor(host, username, password) {
+      this.host = host;
+      this.username = username;
+      this.password = password;
    }
 
    async viewDNS()
