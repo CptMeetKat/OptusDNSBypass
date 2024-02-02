@@ -26,11 +26,11 @@ async function run(args)
 
 }
 
-function configureLogger(args)
+function configureLogger(isVerbose)
 {
    let logger = new Logger();
-   if(args.verbose)
-      logger.setLogLevel(5)
+   if(isVerbose)
+      logger.setLogLevel(5);
 
    ConfigManager.Logger = logger;
    NetworkMonitor.Logger = logger;
@@ -40,7 +40,7 @@ function configureLogger(args)
 async function main()
 {
    let args = ArgumentParser.parseArgs();
-   configureLogger(args);
+   configureLogger(args.verbose);
    await run(args);
 }
 
