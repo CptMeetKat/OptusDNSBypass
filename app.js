@@ -1,6 +1,6 @@
 
 const DNSBypass =  require('./DNSBypass/DNSBypass');
-const ConfigManager = require('./ConfigManager.js');
+const ConfigManager = require('./Services/ConfigManager.js');
 const NetworkMonitor = require('./NetworkMonitor/NetworkMonitor.js');
 const Logger = require('./Services/Logger.js');
 const APISessionManager = require('./RouterAPI/APISessionManager.js');
