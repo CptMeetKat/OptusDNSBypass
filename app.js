@@ -16,10 +16,7 @@ async function run(args)
    else if(args.modifyDNS)
    {
       console.log("ModifyingDNS");
-      config.dns1 = args.modifyDNS[0]; //need to validate IPs?
-      config.dns2 = args.modifyDNS[1];
-      // config.modifyDNS = true; //these need to be removed from the config, restructure DNSBypass object?
-      await new DNSBypass(config).modifyDNS();
+      await new DNSBypass(config).modifyDNS(args.modifyDNS[0], args.modifyDNS[1]);
    }
    else if(args.monitor)
       await new NetworkMonitor(config).run();

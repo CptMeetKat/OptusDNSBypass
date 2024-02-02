@@ -5,13 +5,9 @@ const APISessionManager =  require('../RouterAPI/APISessionManager');
 class DNSBypass {
 
    constructor(config) {
-      // this.config = config
-
       this.host = config.host;
       this.username = config.username;
       this.password = config.password;
-      this.dns1 = config.dns1;
-      this.dns2 = config.dns2;
    }
 
    async viewDNS()
@@ -29,7 +25,7 @@ class DNSBypass {
       }
    }
 
-   async modifyDNS()
+   async modifyDNS(dns1, dns2)
    {
       try
       {
@@ -38,7 +34,7 @@ class DNSBypass {
 
          console.info("Current DHCP settings: ");
          await DNSBypass.displayDNS(this.host, cookie);
-         await DNSBypass.changeDNS(this.host, cookie, this.dns1, this.dns2);
+         await DNSBypass.changeDNS(this.host, cookie, dns1, dns2);
 
       } catch (error) {
          console.error('Error:', error);
