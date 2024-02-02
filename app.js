@@ -18,8 +18,8 @@ async function run(args)
       console.log("ModifyingDNS");
       config.dns1 = args.modifyDNS[0]; //need to validate IPs?
       config.dns2 = args.modifyDNS[1];
-      config.modifyDNS = true; //these need to be removed from the config, restructure DNSBypass object?
-      await new DNSBypass(config).run();
+      // config.modifyDNS = true; //these need to be removed from the config, restructure DNSBypass object?
+      await new DNSBypass(config).modifyDNS();
    }
    else if(args.monitor)
       await new NetworkMonitor(config).run();
